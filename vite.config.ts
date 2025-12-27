@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // اطمینان از اینکه متغیر process.env در مرورگر تعریف شده است
+    // این بخش بسیار حیاتی است تا مرورگر کرش نکند
     'process.env.API_KEY': JSON.stringify(process.env.API_KEY || ''),
-    'process.env': {} 
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    'process.env': '({})' 
   },
   server: {
     port: 3000,
@@ -14,6 +15,13 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: false
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'recharts'],
+        },
+      },
+    },
   }
 });

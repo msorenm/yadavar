@@ -10,6 +10,10 @@
       body {
         font-family: 'Vazirmatn', sans-serif;
         background-color: #f8fafc;
+        margin: 0;
+      }
+      #root {
+        min-height: 100vh;
       }
       ::-webkit-scrollbar {
         width: 6px;
@@ -41,7 +45,7 @@
 </head>
   <body>
     <div id="root"></div>
-    <!-- این خط حیاتی است: اتصال فایل جاوااسکریپت به صفحه -->
+    <!-- در Vite، مسیر فایل اصلی باید بدون تداخل با importmap باشد -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>

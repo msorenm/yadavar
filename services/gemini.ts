@@ -1,12 +1,23 @@
 import { GoogleGenAI } from "@google/genai";
 import { Check } from "../types";
 
-// دریافت کلید با مقدار پیش‌فرض برای جلوگیری از خطای مقدار خالی
-const API_KEY = process.env.API_KEY || "";
+/**
+ * دریافت ایمن کلید API
+ * در لایه Vite، این مقدار در زمان بیلد جایگزین می‌شود.
+ */
+const getApiKey = (): string => {
+  try {
+    return process.env.API_KEY || "";
+  } catch (e) {
+    return "";
+  }
+};
 
 export async function analyzeChecks(checks: Check[]): Promise<string> {
-  if (!API_KEY || API_KEY === "") {
-    return "خطا: کلید API تنظیم نشده است. لطفاً فایل .env یا متغیرهای محیطی سرور را بررسی کنید.";
+  const API_KEY = getApiKey();
+
+  if (!API_KEY) {
+    return "⚠️ هشدار: کلید API تنظیم نشده است. بخش تحلیل هوشمند غیرفعال است.";
   }
 
   try {
@@ -36,6 +47,6 @@ export async function analyzeChecks(checks: Check[]): Promise<string> {
     return response.text || "تحلیلی دریافت نشد.";
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "در حال حاضر امکان تحلیل هوشمند وجود ندارد. وضعیت اتصال اینترنت یا اعتبار کلید را بررسی کنید.";
+    return "در حال حاضر امکان تحلیل هوشمند وجود ندارد. وضعیت اتصال یا کلید API را بررسی کنید.";
   }
 }
